@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Theme Homepage</title>
+    <title>Color Wheel Homepage</title>
     <style>
         /* Reset and base styles */
         * {
@@ -18,137 +18,16 @@
             line-height: 1.6;
         }
         
-        /* Theme Variables */
+        /* Theme Variables - These will be updated by the color picker */
         :root {
-            /* Default Theme */
             --primary-color: #3498db;
-            --secondary-color: #2980b9;
-            --accent-color: #1abc9c;
+            --primary-light: #5dade2;
+            --primary-dark: #2874a6;
             --text-color: #333333;
             --bg-color: #f8f9fa;
             --card-bg: #ffffff;
             --footer-bg: #2c3e50;
             --footer-text: #ecf0f1;
-        }
-        
-        /* Blue Theme - Default */
-        .theme-blue {
-            --primary-color: #3498db;
-            --secondary-color: #2980b9;
-            --accent-color: #1abc9c;
-            --text-color: #333333;
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --footer-bg: #2c3e50;
-            --footer-text: #ecf0f1;
-        }
-        
-        /* Green Theme */
-        .theme-green {
-            --primary-color: #27ae60;
-            --secondary-color: #219653;
-            --accent-color: #f39c12;
-            --text-color: #2d3436;
-            --bg-color: #f0f7f4;
-            --card-bg: #ffffff;
-            --footer-bg: #1e3d2f;
-            --footer-text: #e5f9ee;
-        }
-        
-        /* Purple Theme */
-        .theme-purple {
-            --primary-color: #9b59b6;
-            --secondary-color: #8e44ad;
-            --accent-color: #f1c40f;
-            --text-color: #34495e;
-            --bg-color: #f7f4f9;
-            --card-bg: #ffffff;
-            --footer-bg: #4a235a;
-            --footer-text: #f3e5f5;
-        }
-        
-        /* Dark Theme */
-        .theme-dark {
-            --primary-color: #6c5ce7;
-            --secondary-color: #5045cd;
-            --accent-color: #00cec9;
-            --text-color: #dfe6e9;
-            --bg-color: #2d3436;
-            --card-bg: #3d3d3d;
-            --footer-bg: #1a1a1a;
-            --footer-text: #dfe6e9;
-        }
-        
-        /* Red Theme */
-        .theme-red {
-            --primary-color: #e74c3c;
-            --secondary-color: #c0392b;
-            --accent-color: #3498db;
-            --text-color: #333333;
-            --bg-color: #fff5f5;
-            --card-bg: #ffffff;
-            --footer-bg: #641e16;
-            --footer-text: #fadbd8;
-        }
-        
-        /* Theme Switcher Styles */
-        .theme-switcher {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
-        
-        .theme-switcher h3 {
-            margin-bottom: 10px;
-            color: var(--text-color);
-            font-size: 16px;
-        }
-        
-        .theme-options {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .theme-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-        
-        .theme-btn:hover {
-            transform: scale(1.1);
-        }
-        
-        .theme-btn.active {
-            border-color: var(--text-color);
-        }
-        
-        .theme-btn-blue {
-            background-color: #3498db;
-        }
-        
-        .theme-btn-green {
-            background-color: #27ae60;
-        }
-        
-        .theme-btn-purple {
-            background-color: #9b59b6;
-        }
-        
-        .theme-btn-dark {
-            background-color: #2d3436;
-        }
-        
-        .theme-btn-red {
-            background-color: #e74c3c;
         }
         
         /* Layout Styles */
@@ -162,6 +41,105 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+        }
+        
+        /* Color Picker Styles */
+        .color-picker {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            width: 240px;
+        }
+        
+        .color-picker h3 {
+            margin-bottom: 15px;
+            color: var(--text-color);
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .wheel-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 15px;
+        }
+        
+        .color-wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                red, orange, yellow, lime, cyan, blue, magenta, red
+            );
+            cursor: pointer;
+        }
+        
+        .color-wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid #ddd;
+            pointer-events: none;
+        }
+        
+        .color-selector {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: white;
+            border: 2px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .color-preview {
+            width: 100%;
+            height: 30px;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .color-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: monospace;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .color-themes {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        
+        .preset-theme {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s ease;
+        }
+        
+        .preset-theme:hover {
+            transform: scale(1.1);
         }
         
         /* Header Styles */
@@ -214,7 +192,7 @@
         
         /* Hero Section */
         .hero {
-            background-color: var(--secondary-color);
+            background-color: var(--primary-dark);
             color: white;
             padding: 4rem 0;
             text-align: center;
@@ -234,7 +212,7 @@
         
         .cta-btn {
             display: inline-block;
-            background-color: var(--accent-color);
+            background-color: var(--primary-light);
             color: white;
             padding: 0.8rem 2rem;
             border-radius: 30px;
@@ -367,19 +345,36 @@
             .hero p {
                 font-size: 1rem;
             }
+            
+            .color-picker {
+                width: 180px;
+                padding: 10px;
+            }
+            
+            .wheel-container {
+                width: 120px;
+                height: 120px;
+            }
         }
     </style>
 </head>
-<body class="theme-blue">
-    <!-- Theme Switcher -->
-    <div class="theme-switcher">
-        <h3>Choose Theme</h3>
-        <div class="theme-options">
-            <button class="theme-btn theme-btn-blue active" data-theme="blue"></button>
-            <button class="theme-btn theme-btn-green" data-theme="green"></button>
-            <button class="theme-btn theme-btn-purple" data-theme="purple"></button>
-            <button class="theme-btn theme-btn-dark" data-theme="dark"></button>
-            <button class="theme-btn theme-btn-red" data-theme="red"></button>
+<body>
+    <!-- Color Picker -->
+    <div class="color-picker">
+        <h3>Choose Your Theme</h3>
+        <div class="wheel-container">
+            <div class="color-wheel" id="colorWheel"></div>
+            <div class="color-wheel-center"></div>
+            <div class="color-selector" id="colorSelector"></div>
+        </div>
+        <div class="color-preview" id="colorPreview"></div>
+        <input type="text" class="color-input" id="colorInput" value="#3498db">
+        <div class="color-themes">
+            <div class="preset-theme" style="background-color: #3498db" data-color="#3498db"></div>
+            <div class="preset-theme" style="background-color: #27ae60" data-color="#27ae60"></div>
+            <div class="preset-theme" style="background-color: #9b59b6" data-color="#9b59b6"></div>
+            <div class="preset-theme" style="background-color: #e74c3c" data-color="#e74c3c"></div>
+            <div class="preset-theme" style="background-color: #f39c12" data-color="#f39c12"></div>
         </div>
     </div>
 
@@ -387,7 +382,7 @@
     <header>
         <div class="container">
             <nav>
-                <div class="logo">CompanyName</div>
+                <div class="logo">ColorWheel</div>
                 <ul class="nav-links">
                     <li><a href="#">Home</a></li>
                     <li><a href="#">About</a></li>
@@ -403,8 +398,8 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1>Welcome to Our Creative Platform</h1>
-            <p>We help businesses and individuals bring their creative vision to life with cutting-edge solutions and innovative approaches.</p>
+            <h1>Customize Your Experience</h1>
+            <p>Choose your favorite color and watch our website transform! We believe in giving you control over your browsing experience.</p>
             <a href="#" class="cta-btn">Get Started</a>
         </div>
     </section>
@@ -415,19 +410,19 @@
             <h2 class="section-title">Our Features</h2>
             <div class="features-grid">
                 <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Color Customization</h3>
+                    <p>Choose from millions of colors with our interactive color wheel to create your perfect browsing experience.</p>
+                </div>
+                <div class="feature-card">
                     <div class="feature-icon">💡</div>
-                    <h3>Innovative Design</h3>
-                    <p>Our team creates stunning, user-friendly designs that capture attention and drive engagement.</p>
+                    <h3>Smart Theming</h3>
+                    <p>Our system automatically generates harmonious color schemes based on your primary color selection.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🚀</div>
-                    <h3>Fast Performance</h3>
-                    <p>Lightning-fast solutions optimized for speed and efficiency across all platforms.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3>Enhanced Security</h3>
-                    <p>Built-in security features protect your data and ensure peace of mind.</p>
+                    <div class="feature-icon">📱</div>
+                    <h3>Responsive Design</h3>
+                    <p>Enjoy a consistent and beautiful experience across all your devices, from desktop to mobile.</p>
                 </div>
             </div>
         </div>
@@ -475,29 +470,166 @@
                 </div>
             </div>
             <div class="copyright">
-                &copy; 2025 CompanyName. All rights reserved.
+                &copy; 2025 ColorWheel. All rights reserved.
             </div>
         </div>
     </footer>
 
     <script>
-        // Theme Switcher Functionality
-        const themeButtons = document.querySelectorAll('.theme-btn');
-        const body = document.body;
+        // Color Wheel Functionality
+        const colorWheel = document.getElementById('colorWheel');
+        const colorSelector = document.getElementById('colorSelector');
+        const colorPreview = document.getElementById('colorPreview');
+        const colorInput = document.getElementById('colorInput');
+        const presetThemes = document.querySelectorAll('.preset-theme');
         
-        themeButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove active class from all buttons
-                themeButtons.forEach(btn => btn.classList.remove('active'));
+        // Set initial position of selector
+        const initialColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+        colorInput.value = initialColor;
+        colorPreview.style.backgroundColor = initialColor;
+        
+        // Helper functions to convert between color formats
+        function hexToRgb(hex) {
+            // Remove # if present
+            hex = hex.replace('#', '');
+            
+            // Parse hex values
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+            
+            return { r, g, b };
+        }
+        
+        function rgbToHex(r, g, b) {
+            return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+        
+        // Function to update theme based on selected color
+        function updateTheme(hexColor) {
+            const root = document.documentElement;
+            const rgb = hexToRgb(hexColor);
+            
+            // Set primary color
+            root.style.setProperty('--primary-color', hexColor);
+            
+            // Generate lighter variant
+            const lightR = Math.min(255, rgb.r + 40);
+            const lightG = Math.min(255, rgb.g + 40);
+            const lightB = Math.min(255, rgb.b + 40);
+            const lightColor = rgbToHex(lightR, lightG, lightB);
+            root.style.setProperty('--primary-light', lightColor);
+            
+            // Generate darker variant
+            const darkR = Math.max(0, rgb.r - 40);
+            const darkG = Math.max(0, rgb.g - 40);
+            const darkB = Math.max(0, rgb.b - 40);
+            const darkColor = rgbToHex(darkR, darkG, darkB);
+            root.style.setProperty('--primary-dark', darkColor);
+            
+            // Update input and preview
+            colorInput.value = hexColor;
+            colorPreview.style.backgroundColor = hexColor;
+        }
+        
+        // Event listeners for color wheel
+        colorWheel.addEventListener('mousedown', function(e) {
+            function getColorFromWheel(event) {
+                // Get position relative to color wheel
+                const rect = colorWheel.getBoundingClientRect();
+                const x = event.clientX - rect.left - rect.width / 2;
+                const y = event.clientY - rect.top - rect.height / 2;
                 
-                // Add active class to clicked button
-                button.classList.add('active');
+                // Calculate angle and distance from center
+                const angle = Math.atan2(y, x);
+                const distance = Math.sqrt(x * x + y * y);
+                const radius = rect.width / 2;
                 
-                // Set the theme
-                const theme = button.getAttribute('data-theme');
-                body.className = `theme-${theme}`;
-                
-                // No localStorage usage in sandboxed environment
+                // Only update if within the wheel
+                if (distance <= radius) {
+                    // Set position of selector
+                    const selectorX = rect.left + rect.width / 2 + Math.cos(angle) * (distance);
+                    const selectorY = rect.top + rect.height / 2 + Math.sin(angle) * (distance);
+                    
+                    colorSelector.style.left = selectorX + 'px';
+                    colorSelector.style.top = selectorY + 'px';
+                    
+                    // Convert angle to hue (0-360 degrees)
+                    let hue = (angle * 180 / Math.PI) + 180;
+                    
+                    // Convert distance to saturation (0-100%)
+                    const saturation = Math.min(100, (distance / radius) * 100);
+                    
+                    // Convert HSV to RGB
+                    const h = hue / 60;
+                    const s = saturation / 100;
+                    const v = 1;
+                    
+                    let r, g, b;
+                    
+                    const i = Math.floor(h);
+                    const f = h - i;
+                    const p = v * (1 - s);
+                    const q = v * (1 - s * f);
+                    const t = v * (1 - s * (1 - f));
+                    
+                    switch (i % 6) {
+                        case 0: r = v; g = t; b = p; break;
+                        case 1: r = q; g = v; b = p; break;
+                        case 2: r = p; g = v; b = t; break;
+                        case 3: r = p; g = q; b = v; break;
+                        case 4: r = t; g = p; b = v; break;
+                        case 5: r = v; g = p; b = q; break;
+                    }
+                    
+                    // Convert to 0-255 range and get hex
+                    r = Math.round(r * 255);
+                    g = Math.round(g * 255);
+                    b = Math.round(b * 255);
+                    
+                    const hexColor = rgbToHex(r, g, b);
+                    
+                    // Update theme
+                    updateTheme(hexColor);
+                }
+            }
+            
+            getColorFromWheel(e);
+            
+            function handleMouseMove(event) {
+                getColorFromWheel(event);
+            }
+            
+            function handleMouseUp() {
+                document.removeEventListener('mousemove', handleMouseMove);
+                document.removeEventListener('mouseup', handleMouseUp);
+            }
+            
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+        });
+        
+        // Handle color input changes
+        colorInput.addEventListener('change', function() {
+            let hexColor = this.value;
+            
+            // Add # if not present
+            if (!hexColor.startsWith('#')) {
+                hexColor = '#' + hexColor;
+            }
+            
+            // Validate hex format
+            const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+            if (hexRegex.test(hexColor)) {
+                updateTheme(hexColor);
+            }
+        });
+        
+        // Handle preset theme clicks
+        presetThemes.forEach(theme => {
+            theme.addEventListener('click', function() {
+                const color = this.getAttribute('data-color');
+                updateTheme(color);
             });
         });
         
@@ -505,7 +637,7 @@
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const navLinks = document.querySelector('.nav-links');
         
-        mobileMenuBtn.addEventListener('click', () => {
+        mobileMenuBtn.addEventListener('click', function() {
             navLinks.classList.toggle('active');
         });
     </script>
